@@ -7,8 +7,12 @@
 \usage{
 \method{summary}{glm_hP}(object, ...)
 
-\method{print}{summary.glm_hP}(x, digits = max(3, getOption("digits") -
-  3), signif.stars = getOption("show.signif.stars"), ...)
+\method{print}{summary.glm_hP}(
+  x,
+  digits = max(3, getOption("digits") - 3),
+  signif.stars = getOption("show.signif.stars"),
+  ...
+)
 }
 \arguments{
 \item{object}{an object of class \code{"glm_hP"}, usually, a result of a call

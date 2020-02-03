@@ -124,7 +124,7 @@ CMP_expected <- function(object) {
   prob <- matrix(0, nrow = row + 1, ncol = col)
   dist <- matrix(0, nrow = row + 1, ncol = col)
   for (j in seq_len(col)) {
-    prob[1:row, j] <- compoisson::dcom(i, lambda[j], nu[j])
+    prob[1:row, j] <- COMPoissonReg::dcmp(i, lambda[j], nu[j])
     prob[row + 1, j] <-  1 - sum(prob[, j])
     if (sum(prob[1:row, j]) > 1){
       prob[1:row, j] <- prob[1:row, j]/sum(prob[1:row, j])

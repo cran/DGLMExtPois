@@ -4,8 +4,7 @@
 \alias{predict.glm_CMP}
 \title{Predict Method for glm_CMP Fits}
 \usage{
-\method{predict}{glm_CMP}(object, newdata = NULL, type = c("link",
-  "response"), ...)
+\method{predict}{glm_CMP}(object, newdata = NULL, type = c("link", "response"), ...)
 }
 \arguments{
 \item{object}{a fitted object of class inheriting from \code{"glm_CMP"}.}

@@ -4,8 +4,7 @@
 \alias{predict.glm_hP}
 \title{Predict Method for glm_hP Fits}
 \usage{
-\method{predict}{glm_hP}(object, newdata = NULL, type = c("link",
-  "response"), ...)
+\method{predict}{glm_hP}(object, newdata = NULL, type = c("link", "response"), ...)
 }
 \arguments{
 \item{object}{a fitted object of class inheriting from \code{"glm_hP"}.}

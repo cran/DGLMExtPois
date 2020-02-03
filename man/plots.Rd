@@ -6,13 +6,19 @@
 \alias{plot.glm_CMP}
 \title{Plot Diagnostics for glm_hP and glm_CMP Objects}
 \usage{
-\method{plot}{glm_hP}(x, type = c("quantile", "pearson", "response"),
+\method{plot}{glm_hP}(
+  x,
+  type = c("quantile", "pearson", "response"),
   ask = prod(graphics::par("mfcol")) < 2 && grDevices::dev.interactive(),
-  ...)
+  ...
+)
 
-\method{plot}{glm_CMP}(x, type = c("quantile", "pearson", "response"),
+\method{plot}{glm_CMP}(
+  x,
+  type = c("quantile", "pearson", "response"),
   ask = prod(graphics::par("mfcol")) < 2 && grDevices::dev.interactive(),
-  ...)
+  ...
+)
 }
 \arguments{
 \item{x}{\code{glm_hP} or \code{glm_CMP} object, typically the result of

@@ -11,11 +11,6 @@ DGLMExtPois is a package that contains statistical functions for the
 model estimation, dispersion testing and diagnosis of hyper-Poisson and
 Conway-Maxwell-Poisson regression models.
 
-## Funding
-
-The development of this packages is partially supported by the Spanish
-National Research Project TIN2015-68454-R.
-
 ## Installation
 
 You can install the released version of DGLMExtPois from

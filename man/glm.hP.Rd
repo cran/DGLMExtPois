@@ -4,10 +4,25 @@
 \alias{glm.hP}
 \title{Fit a hyper-Poisson Double Generalized Linear Model}
 \usage{
-glm.hP(formula.mu, formula.gamma, init.beta = NULL, init.delta = NULL,
-  data, weights, subset, na.action, maxiter_series = 1000, tol = 0,
-  offset, opts = NULL, model.mu = TRUE, model.gamma = TRUE,
-  x = FALSE, y = TRUE, z = FALSE)
+glm.hP(
+  formula.mu,
+  formula.gamma,
+  init.beta = NULL,
+  init.delta = NULL,
+  data,
+  weights,
+  subset,
+  na.action,
+  maxiter_series = 1000,
+  tol = 0,
+  offset,
+  opts = NULL,
+  model.mu = TRUE,
+  model.gamma = TRUE,
+  x = FALSE,
+  y = TRUE,
+  z = FALSE
+)
 }
 \arguments{
 \item{formula.mu}{an object of class "formula" (or one that can be coerced to

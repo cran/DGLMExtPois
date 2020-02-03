@@ -4,10 +4,25 @@
 \alias{glm.CMP}
 \title{Fit a COM-Poisson Double Generalized Linear Model}
 \usage{
-glm.CMP(formula.mu, formula.nu, init.beta = NULL, init.delta = NULL,
-  data, weights, subset, na.action, maxiter_series = 1000, tol = 0,
-  offset, opts = NULL, model.mu = TRUE, model.nu = TRUE, x = FALSE,
-  y = TRUE, z = FALSE)
+glm.CMP(
+  formula.mu,
+  formula.nu,
+  init.beta = NULL,
+  init.delta = NULL,
+  data,
+  weights,
+  subset,
+  na.action,
+  maxiter_series = 1000,
+  tol = 0,
+  offset,
+  opts = NULL,
+  model.mu = TRUE,
+  model.nu = TRUE,
+  x = FALSE,
+  y = TRUE,
+  z = FALSE
+)
 }
 \arguments{
 \item{formula.mu}{regression formula linked to \code{log(mu)}}

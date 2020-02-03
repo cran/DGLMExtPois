@@ -6,13 +6,23 @@
 \alias{residuals.glm_CMP}
 \title{Extract and Visualize hyper-Poisson and COM-Poisson Model Residuals}
 \usage{
-\method{residuals}{glm_hP}(object, type = c("pearson", "response",
-  "quantile"), envelope = FALSE, rep = 19,
-  title = "Simulated Envelope of Residuals", ...)
+\method{residuals}{glm_hP}(
+  object,
+  type = c("pearson", "response", "quantile"),
+  envelope = FALSE,
+  rep = 19,
+  title = "Simulated Envelope of Residuals",
+  ...
+)
 
-\method{residuals}{glm_CMP}(object, type = c("pearson", "response",
-  "quantile"), envelope = FALSE, rep = 19,
-  title = "Simulated Envelope of Residuals", ...)
+\method{residuals}{glm_CMP}(
+  object,
+  type = c("pearson", "response", "quantile"),
+  envelope = FALSE,
+  rep = 19,
+  title = "Simulated Envelope of Residuals",
+  ...
+)
 }
 \arguments{
 \item{object}{an object of class \code{"glm_hP"} or \code{"glm_CMP"},
