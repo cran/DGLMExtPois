@@ -85,6 +85,8 @@ se_betas_cmp <- function(object) {
 
 se_deltas_cmp <- function(object) {
   deltas <- object$deltas
+  lambda <- object$lambdas
+  nu <- object$nus
 
   if (! is.null(object$y)) {
     y <- object$y
@@ -106,6 +108,19 @@ se_deltas_cmp <- function(object) {
     a.nu <- stats::model.frame(formula.nu, data = object$data)
     matrix.nu <- stats::model.matrix(attr(a.nu, "terms"), a.nu)
   }
+
+  W1 <- diag(as.vector(nu^2*variances_lfact(lambda, nu, object$maxiter_series, object$tol)))
+  W2 <- diag(as.vector(nu^2*
+                         covars_lfact_y(lambda, nu, object$maxiter_series, object$tol)^2/variances_cmp(lambda, nu, object$maxiter_series, object$tol)))
+
+  In_delta  <- t(matrix.nu) %*% (W1-W2) %*% matrix.nu
+
+  Z <- tryCatch(sqrt(diag(solve(In_delta))),
+           error = function(e) NULL
+  )
+
+  if (! is.null(Z))
+    return(Z)
 
   loglik_red <- function(deltas) {
     nus <- exp(matrix.nu %*% deltas)

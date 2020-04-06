@@ -1,8 +1,10 @@
+## DGLMExtPois 0.1.2
+
+* New way of computing standard errors of delta coefficients
+
 ## DGLMExtPois 0.1.1
 
-* Remove dependency with compoisson package, that will be remove from CRAN
-
-This is the first release of this package.
+* Remove dependency with compoisson package. This package is orphan
 
 ## DGLMExtPois 0.1.0
 

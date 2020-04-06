@@ -4,13 +4,15 @@
 \name{Bids}
 \alias{Bids}
 \title{Bids Received by U.S. Firms}
-\format{A data frame with 126 rows and 13 variables: \describe{
+\format{
+A data frame with 126 rows and 13 variables: \describe{
   \item{docno}{doc no.} \item{weeks}{weeks} \item{numbids}{count}
   \item{takeover}{delta(1 if taken over)} \item{bidprem}{bid Premium}
   \item{insthold}{institutional holdings} \item{size}{size measured in
   billions} \item{leglrest}{legal restructuring} \item{rearest}{real
   restructuring} \item{finrest}{financial restructuring}
-  \item{regulatn}{regulation} \item{whtknght}{white knight} }}
+  \item{regulatn}{regulation} \item{whtknght}{white knight} }
+}
 \source{
 Jaggia, Sanjiv and Satish Thosar (1993) “Multiple Bids as a
   Consequence of Target Management Resistance”, Review of Quantitative

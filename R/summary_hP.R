@@ -114,8 +114,21 @@ se_deltas_hp <- function(object) {
     matrix.gamma <- stats::model.matrix(attr(a.gamma, "terms"), a.gamma)
   }
 
+  W1 <- diag(as.vector(gammas^2*variances_psiy(lambdas, gammas, object$maxiter_series, object$tol)))
+  W2 <- diag(as.vector(gammas^2*
+                         covars_psiy(lambdas, gammas, object$maxiter_series, object$tol)^2/variances_hp(lambdas, gammas, object$maxiter_series, object$tol)))
+
+  In_delta  <- t(matrix.gamma) %*% (W1-W2) %*% matrix.gamma
+
+  Z <- tryCatch(sqrt(diag(solve(In_delta))),
+           error = function(e) NULL
+  )
+
+  if (! is.null(Z))
+    return(Z)
+
   loglik_red <- function(deltas) {
-    gammas  <- exp(matrix.gamma %*% deltas)
+  gammas  <- exp(matrix.gamma %*% deltas)
     - sum(object$weights * (y * log(lambdas) -
                               lgamma(gammas + y) + lgamma(gammas) -
                               log(f11(lambdas, gammas, object$maxiter_series, object$tol))))
