@@ -1,12 +1,12 @@
-ed079ed7655596ee05d98c89cdd2ff68 *DESCRIPTION
+b5b2db6de7647d6ef7f73f5eb47def21 *DESCRIPTION
 d9f68925a4b03364c9386c67d0a62717 *NAMESPACE
-5b4c259fe67be2a318d39ad4c7685953 *NEWS.md
+a336de9c08c910d26b7fea07ac8b9c8e *NEWS.md
 6d2b2b7f70e926eeb51fdf0ec238dcbe *R/DGLMExtPois.R
 c0987dd4c0cd3475b5f181b516dc0a79 *R/data.R
 8d1b5a460f7e7a902a647fb7912fdf6f *R/distribution_hP.R
 bc5558ac200b5f2a7ea70c22dd49e89d *R/glm_CMP.R
 8b62b0cd21bc07fc7fd4200e9308baf3 *R/glm_CMP_methods.R
-5c59e67fbae3a82f9d8a59e006fe6f6f *R/glm_hP.R
+51021dcacd2e872125628a46fe264266 *R/glm_hP.R
 7a9dd38a942f34dc8e475793fb901a0b *R/glm_hP_methods.R
 83de5e00908cdfe354c2ad4f5cc8d3df *R/lrtest.R
 35b263f304302d698ad7051d5a55c709 *R/marginal-probabilities-and-expectations.R

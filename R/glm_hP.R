@@ -196,7 +196,7 @@ glm.hP <- function(formula.mu, formula.gamma, init.beta = NULL,
     beta_gamma <- param[(q1+n+1):(q1+n+q2)]
     gamma      <- as.vector(exp(matrizgamma %*% beta_gamma))
     return(-c(rep(0, q1),
-              weights * (y - means_hp(lambda, gamma, maxiter_series = maxiter_series, tol = tol)),
+              weights * (y / lambda - means_hp(lambda, gamma, maxiter_series = maxiter_series, tol = tol) / lambda) * lambda,
               (weights * (-digamma(gamma + y) +
                             means_psiy(lambda, gamma, maxiter_series, tol))) %*%
                 t(t(matrizgamma) %*% diag(gamma))))

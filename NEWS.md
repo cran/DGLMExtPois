@@ -1,3 +1,7 @@
+## DGLMExtPois 0.1.3
+
+* Fixed error produced in some dataset when estimating parameters of hP models
+
 ## DGLMExtPois 0.1.2
 
 * New way of computing standard errors of delta coefficients
