@@ -35,21 +35,33 @@
 #'   default) the y vector used.} \item{\code{matrix.mu}}{if requested, the mu
 #'   model matrix.} \item{\code{matrix.nu}}{if requested, the nu model matrix.}
 #'   \item{\code{model.mu}}{if requested (the default) the mu model frame.}
-#'   \item{\code{model.nu}}{if requested (the default) the nu model frame.}
+#'   \item{\code{model.nu}}{if requested (the default) the nu model
+#'   frame.}\item{\code{nloptr}}{an object of class \code{"nloptr"} with the
+#'   result returned by the optimizer \code{\link[nloptr]{nloptr}}}
 #' @export
 #'
-#' @references Huang, A. (2017). Mean-parametrized Conway–Maxwell–Poisson
-#' regression models for dispersed counts. Statistical Modelling 17, 359--380.
+#' @references Alan Huang (2017). "Mean-parametrized Conway–Maxwell–Poisson
+#'   regression models for dispersed counts", Statistical Modelling, 17(6), pp.
+#'   359--380.
 #'
-#' Johnson, S. G. (2018). \href{https://CRAN.R-project.org/package=nloptr}{The
-#' nlopt nonlinear-optimization package}
+#'   S. G. Johnson (2018). \href{https://CRAN.R-project.org/package=nloptr}{The
+#'   nlopt nonlinear-optimization package}
 #'
 #' @examples
+#' ## Fit model
 #' Bids$size.sq <- Bids$size^2
 #' fit <- glm.CMP(formula.mu = numbids ~ leglrest + rearest + finrest +
 #'                whtknght + bidprem + insthold + size + size.sq + regulatn,
 #'                formula.nu = numbids ~ 1, data = Bids)
+#'
+#' ## Summary of the model
 #' summary(fit)
+#'
+#' ## To see termination condition of the optimization process
+#' fit$nloptr$message
+#'
+#' ## To see number of iterations of the optimization process
+#' fit$nloptr$iterations
 glm.CMP <- function(formula.mu, formula.nu, init.beta = NULL,
                     init.delta = NULL, data, weights, subset, na.action,
                     maxiter_series = 1000, tol = 0, offset, opts = NULL,
@@ -114,6 +126,87 @@ glm.CMP <- function(formula.mu, formula.nu, init.beta = NULL,
       stop("negative weights not allowed")
   }
 
+  global_lambda_Z <- NULL
+  global_nu_Z <- NULL
+  Z_cache <- NULL
+  Z <- function(lambda, nu, maxiter_series, tol) {
+    if (identical(lambda, global_lambda_Z) && identical(nu, global_nu_Z))
+      return(Z_cache)
+    global_lambda_Z <<- lambda
+    global_nu_Z <<- nu
+    fac  <- 1
+    temp <- 1
+    for (n in seq_len(maxiter_series)) {
+      fac    <- fac * lambda / (n^nu)
+      series <- temp + fac
+      if (stopping(series - temp, tol)){  # & n >= 100){
+        Z_cache <<- Re(series)
+        return(Z_cache)
+      }
+      temp <- series
+    }
+    Z_cache <<- Re(series)
+    return(Z_cache)
+  }
+
+  global_lambda_means_cmp <- NULL
+  global_nu_means_cmp <- NULL
+  means_cmp_cache <- NULL
+  means_cmp <- function(lambda, nu, maxiter_series = 10000, tol = 1.0e-10) {
+    if (identical(lambda, global_lambda_means_cmp) && identical(nu, global_nu_means_cmp))
+      return(means_cmp_cache)
+    global_lambda_means_cmp <<- lambda
+    global_nu_means_cmp <<- nu
+    fac  <- 1
+    temp <- 0
+    for (n in seq_len(maxiter_series)) {
+      fac    <- fac * lambda / (n ^ nu)
+      series <- temp + n * fac
+      temp   <- series
+    }
+    means_cmp_cache <<- Re(series) / Z(lambda, nu, maxiter_series, tol)
+    means_cmp_cache
+  }
+
+  global_lambda_means_lfact <- NULL
+  global_nu_means_lfact <- NULL
+  means_lfact_cache <- NULL
+  means_lfact <- function(lambda, nu, maxiter_series = 10000, tol = 1.0e-10) {
+    if (identical(lambda, global_lambda_means_lfact) && identical(nu, global_nu_means_lfact))
+      return(means_lfact_cache)
+    global_lambda_means_lfact <<- lambda
+    global_nu_means_lfact <<- nu
+    fac  <- 1
+    temp <- 0
+    for (n in seq_len(maxiter_series)) {
+      fac    <- fac * lambda / (n ^ nu)
+      series <- temp + lfactorial(n) * fac
+      temp   <- series
+    }
+    means_lfact_cache <<- Re(series) / Z(lambda, nu, maxiter_series, tol)
+    means_lfact_cache
+  }
+
+  global_lambda_variances_cmp <- NULL
+  global_nu_variances_cmp <- NULL
+  variances_cmp_cache <- NULL
+  variances_cmp <- function(lambda, nu, maxiter_series = 10000, tol = 1.0e-10) {
+    if (identical(lambda, global_lambda_variances_cmp) &&
+        identical(nu, global_nu_variances_cmp))
+      return(variances_cmp_cache)
+    global_lambda_variances_cmp <<- lambda
+    global_nu_variances_cmp <<- nu
+    fac  <- 1
+    temp <- 0
+    for (n in seq_len(maxiter_series)) {
+      fac    <- fac * lambda / (n^nu)
+      series <- temp + n^2 * fac
+      temp   <- series
+    }
+    variances_cmp_cache <<- Re(series) / Z(lambda, nu, maxiter_series, tol) - means_cmp(lambda, nu, maxiter_series, tol)^2
+    variances_cmp_cache
+  }
+
   n  <- length(y)
   q1 <- ncol(matrizmu)
   q2 <- ncol(matriznu)
@@ -169,8 +262,7 @@ glm.CMP <- function(formula.mu, formula.nu, init.beta = NULL,
                         xtol_rel = 0.01
   )
   my_opts <- list(algorithm = 'NLOPT_LD_SLSQP',
-                  xtol_rel = 0.01,
-                  maxeval = 100000,
+                  maxeval = 1000,
                   local_opts = my_local_opts,
                   print_level = 0
   )
@@ -190,7 +282,7 @@ glm.CMP <- function(formula.mu, formula.nu, init.beta = NULL,
   fit$pars <- fit$solution
 
   results <- list(
-    todo = fit,
+    nloptr = fit,
     offset = unname(stats::model.extract(a.mu, "offset")),
     aic = 2 * (fit$objective) + (q1 + q2) * 2,
     bic = 2 * (fit$objective) + (q1 + q2) * log(sum(weights)),

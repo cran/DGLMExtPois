@@ -33,9 +33,13 @@ These functions are all methods for class \code{"glm_CMP"} or
 \code{summary.glm_CMP} objects.
 }
 \examples{
+## Fit a COM-Poisson model
 Bids$size.sq <- Bids$size^2
 fit <- glm.CMP(formula.mu = numbids ~ leglrest + rearest + finrest +
                whtknght + bidprem + insthold + size + size.sq + regulatn,
                formula.nu = numbids ~ 1, data = Bids)
+
+## Obtain a summary of the fitted model
+
 summary(fit)
 }

@@ -37,18 +37,25 @@ Two plots are currently available: a plot of residuals against fitted values
 and a Normal Q-Q plot.
 }
 \examples{
+## Fit the hyper-Poisson model
 Bids$size.sq <- Bids$size ^ 2
 hP.fit <- glm.hP(formula.mu = numbids ~ leglrest + rearest + finrest +
               whtknght + bidprem + insthold + size + size.sq + regulatn,
               formula.gamma = numbids ~ 1, data = Bids)
 oldpar <- par(mfrow = c(1, 2))
+
+## Plot diagnostics
+
 plot(hP.fit)
 par(oldpar)
+## Fit the COM-Poisson model
 Bids$size.sq <- Bids$size ^ 2
 CMP.fit <- glm.CMP(formula.mu = numbids ~ leglrest + rearest + finrest +
               whtknght + bidprem + insthold + size + size.sq + regulatn,
               formula.nu = numbids ~ 1, data = Bids)
 oldpar <- par(mfrow = c(1, 2))
+
+## Plot diagnostics
 plot(CMP.fit)
 par(oldpar)
 }

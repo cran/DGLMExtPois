@@ -25,9 +25,12 @@ A vector with the prediction means.
 Obtains predictions from a fitted \code{glm_CMP} object.
 }
 \examples{
+## Fit a model
 Bids$size.sq <- Bids$size ^ 2
 fit <- glm.CMP(formula.mu = numbids ~ leglrest + rearest + finrest +
                whtknght + bidprem + insthold + size + size.sq + regulatn,
                formula.nu = numbids ~ 1, data = Bids)
-predict(fit)
+
+## As the newdata parameter is not used the fitted values are obtained
+predict(fit, type = "response")
 }

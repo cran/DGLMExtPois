@@ -1,3 +1,9 @@
+## DGLMExtPois 0.2.0
+
+* Removed dependency with progress package
+* Faster model estimation
+* Improved documentation
+
 ## DGLMExtPois 0.1.3
 
 * Fixed error produced in some dataset when estimating parameters of hP models

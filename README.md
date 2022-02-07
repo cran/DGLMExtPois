@@ -4,7 +4,6 @@
 # DGLMExtPois
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 DGLMExtPois is a package that contains statistical functions for the
@@ -18,6 +17,12 @@ You can install the released version of DGLMExtPois from
 
 ``` r
 install.packages("DGLMExtPois")
+```
+
+and the development version from github with:
+
+``` r
+devtools::install_github("franciscomartinezdelrio/DGLMExtPois")
 ```
 
 ## Example
@@ -68,7 +73,7 @@ summary(hP.bids)
 #> 
 #> Dispersion model coefficients (with logit link):
 #>             Estimate Std. Error z value Pr(>|z|)    
-#> (Intercept)  -2.6219     0.3489  -7.516 5.67e-14 ***
+#> (Intercept)  -2.6219     0.4766  -5.501 3.77e-08 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
@@ -79,10 +84,10 @@ BIC(hP.bids)
 #> [1] 393.5063
 coef(hP.bids)
 #> $mean_model
-#>  (Intercept)     leglrest      rearest      finrest     whtknght 
-#>  1.042145307  0.240886951 -0.268645993  0.104245100  0.487928599 
-#>      bidprem     insthold         size      size.sq     regulatn 
-#> -0.709086033 -0.363993485  0.173023482 -0.007370863 -0.008751012 
+#>  (Intercept)     leglrest      rearest      finrest     whtknght      bidprem 
+#>  1.042145307  0.240886951 -0.268645993  0.104245100  0.487928599 -0.709086033 
+#>     insthold         size      size.sq     regulatn 
+#> -0.363993485  0.173023482 -0.007370863 -0.008751012 
 #> 
 #> $dispersion_model
 #> (Intercept) 
@@ -137,7 +142,7 @@ summary(CMP.bids)
 #> 
 #> Dispersion model coefficients (with logit link):
 #>             Estimate Std. Error z value Pr(>|z|)    
-#> (Intercept)  0.56208    0.04809   11.69   <2e-16 ***
+#> (Intercept)   0.5621     0.1534   3.665 0.000248 ***
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
@@ -148,10 +153,10 @@ BIC(CMP.bids)
 #> [1] 413.3744
 coef(CMP.bids)
 #> $mean_model
-#>  (Intercept)     leglrest      rearest      finrest     whtknght 
-#>  0.990003872  0.267902606 -0.173272510  0.067916284  0.481171553 
-#>      bidprem     insthold         size      size.sq     regulatn 
-#> -0.685006796 -0.367923118  0.179279126 -0.007580393 -0.037561467 
+#>  (Intercept)     leglrest      rearest      finrest     whtknght      bidprem 
+#>  0.990003872  0.267902606 -0.173272510  0.067916284  0.481171553 -0.685006796 
+#>     insthold         size      size.sq     regulatn 
+#> -0.367923118  0.179279126 -0.007580393 -0.037561467 
 #> 
 #> $dispersion_model
 #> (Intercept) 

@@ -42,21 +42,26 @@
 #'
 #'@seealso \code{\link{plots}}
 #'
-#'@references Dunn, P.K., Smyth, G.K. (1996). Randomized quantile residuals.
-#'  Journal of Computational and Graphical Statistics, 5(3), 236-244.
+#'@references Peter K. Dunn and Gordon K. Smyth (1996). "Randomized quantile
+#'  residuals". Journal of Computational and Graphical Statistics, 5(3), pp.
+#'  236-244.
 #'
-#'  Atkinson, A. (1981). Two graphical displays for outlying and influential
-#'  observations in regression. Biometrika, 68 (1), 13–20.
+#'  A. C. Atkinson (1981). "Two graphical displays for outlying and influential
+#'  observations in regression". Biometrika, 68(1), pp. 13–20.
 #'
 #'@name residuals
 NULL
 
 #' @rdname residuals
 #' @examples
+#' ## Estimate a hyper-Poisson model
 #' Bids$size.sq <- Bids$size ^ 2
 #' hP.fit <- glm.hP(formula.mu = numbids ~ leglrest + rearest + finrest +
 #'               whtknght + bidprem + insthold + size + size.sq + regulatn,
 #'               formula.gamma = numbids ~ 1, data = Bids)
+#'
+#' ## Compute residuals
+#'
 #' r <- residuals(hP.fit)
 #' @export
 residuals.glm_hP <- function(object, type = c("pearson", "response", "quantile"),
@@ -72,9 +77,9 @@ residuals.glm_hP <- function(object, type = c("pearson", "response", "quantile")
     return(res_hp(object, type))
 
   residuals_sim <- matrix(0, nrow = length(object$residuals), ncol = rep)
-  pb <- progress::progress_bar$new(total = rep)
+  pb <- utils::txtProgressBar(min = 1, max = rep, initial = 1, style = 3)
   for (x in 1:rep) {
-    pb$tick()
+    utils::setTxtProgressBar(pb, x)
     tmp <- simulation_hp(object, type)
     residuals_sim[, x] <- tmp
   }
@@ -116,8 +121,8 @@ res_hp <- function(object, type) {
   lambda <- object$lambdas
   gamma  <- object$gammas
   if (type == "pearson") {
-    mu       <- object$fitted.values
-    #variance <- lambda + (lambda - (gamma - 1)) * mu - mu ^ 2
+    # mu       <- object$fitted.values
+    # variance <- lambda + (lambda - (gamma - 1)) * mu - mu ^ 2
     variance <- variances_hp(lambda, gamma, object$maxiter_series, object$tol)
     r        <- as.vector(object$residuals / sqrt(variance))
     names(r) <- seq(r)
@@ -154,7 +159,8 @@ simulation_hp <- function(object, type) {
     the_call <- object$call
     the_call[["data"]] = data
     fit <- tryCatch(eval(the_call),
-                    error = function(e) TRUE)
+                    error = function(e) TRUE,
+                    warning = function(e) TRUE)
     if (is.logical(fit))
       next
     if(any(is.nan(res_hp(fit, type))))
@@ -187,10 +193,15 @@ get_response <- function(formula) {
 
 #' @rdname residuals
 #' @examples
+#' ## Estimate a COM-Poisson model
+#'
 #' Bids$size.sq <- Bids$size ^ 2
 #' CMP.fit <- glm.CMP(formula.mu = numbids ~ leglrest + rearest + finrest +
 #'               whtknght + bidprem + insthold + size + size.sq + regulatn,
 #'               formula.nu = numbids ~ 1, data = Bids)
+#'
+#' ## Compute its residuals
+#'
 #' r <- residuals(CMP.fit)
 #' @export
 residuals.glm_CMP <- function(object, type = c("pearson", "response","quantile"),
@@ -202,9 +213,9 @@ residuals.glm_CMP <- function(object, type = c("pearson", "response","quantile")
     return(res_cmp(object, type))
 
   residuals_sim <- matrix(0, nrow = length(object$residuals), ncol = rep)
-  pb <- progress::progress_bar$new(total = rep)
+  pb <- utils::txtProgressBar(min = 1, max = rep, initial = 1, style = 3)
   for (x in 1:rep) {
-    pb$tick()
+    utils::setTxtProgressBar(pb, x)
     tmp <- simulation_cmp(object, type)
     residuals_sim[, x] <- tmp
   }

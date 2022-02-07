@@ -81,25 +81,35 @@
 #'   \item{\code{matrix.gamma}}{if requested, the gamma model matrix.}
 #'   \item{\code{model.mu}}{if requested (the default) the mu model frame.}
 #'   \item{\code{model.gamma}}{if requested (the default) the gamma model
-#'   frame.}
+#'   frame.} \item{\code{nloptr}}{an object of class \code{"nloptr"} with the
+#'   result returned by the optimizer \code{\link[nloptr]{nloptr}}}
 #'
 #' @export
 #'
 #' @references
 #'
-#' Saez-Castillo, A.J. & Conde-Sanchez, A. (2013). "A hyper-Poisson regression
-#' model for overdispersed and underdispersed count data", Computational
-#' Statistics & Data Analysis, vol. 61(C), pages 148--157
+#' Antonio J. Saez-Castillo and Antonio Conde-Sanchez (2013). "A hyper-Poisson
+#' regression model for overdispersed and underdispersed count data",
+#' Computational Statistics & Data Analysis, 61, pp. 148--157.
 #'
-#' Johnson, S. G. (2018). \href{https://CRAN.R-project.org/package=nloptr}{The
+#' S. G. Johnson (2018). \href{https://CRAN.R-project.org/package=nloptr}{The
 #' nlopt nonlinear-optimization package}
 #'
 #' @examples
+#' ## Fit model
 #' Bids$size.sq <- Bids$size ^ 2
 #' fit <- glm.hP(formula.mu = numbids ~ leglrest + rearest + finrest +
 #'               whtknght + bidprem + insthold + size + size.sq + regulatn,
 #'               formula.gamma = numbids ~ 1, data = Bids)
+#'
+#' ## Summary of the model
 #' summary(fit)
+#'
+#' ## To see termination condition of the optimization process
+#' fit$nloptr$message
+#'
+#' ## To see number of iterations of the optimization process
+#' fit$nloptr$iterations
 glm.hP <- function(formula.mu, formula.gamma, init.beta = NULL,
                    init.delta = NULL, data, weights, subset, na.action,
                    maxiter_series = 1000, tol = 0, offset,
@@ -181,13 +191,156 @@ glm.hP <- function(formula.mu, formula.gamma, init.beta = NULL,
   q1 <- ncol(matrizmu) # Number of coefficients of mean equation
   q2 <- ncol(matrizgamma) # Number of coefficients of dispersion equation
 
+  global_lambda <- NULL
+  global_gamma <- NULL
+  f11_cache <- NULL
+  # 1f1(1,gamma;lambda) to normalize hP
+  f11 <- function(lambda, gamma, maxiter_series = 10000, tol = 1.0e-10) {
+    if (identical(lambda, global_lambda) && identical(gamma, global_gamma))
+      return(f11_cache)
+    global_lambda <<- lambda
+    global_gamma <<- gamma
+    fac  <- 1
+    temp <- 1
+    L    <- gamma
+    for (n in seq_len(maxiter_series)) {
+      fac    <- fac * lambda / L
+      series <- temp + fac
+      if (stopping(series - temp, tol)){
+        f11_cache <<- Re(series)
+        return(f11_cache)
+      }
+      temp   <- series
+      L      <- L + 1
+    }
+    if (tol >= 0)
+      warning("Tolerance is not met")
+    f11_cache <<- Re(series)
+    return(f11_cache)
+  }
+
+  # E[Y]
+  lambda_means_hp <- NULL
+  gamma_means_hp <- NULL
+  means_hp_cache <- NULL
+  means_hp <- function(lambda, gamma, maxiter_series = 10000, tol = 1.0e-10, f11_comp = NULL) {
+    if (identical(lambda, lambda_means_hp) && identical(gamma, gamma_means_hp))
+      return(means_hp_cache)
+    lambda_means_hp <<- lambda
+    gamma_means_hp <<- gamma
+    if (is.null(f11_comp))
+      f11_comp <- f11(lambda, gamma, maxiter_series, tol)
+    L    <- gamma
+    fac  <- 1
+    temp <- 0
+    for (n in seq_len(maxiter_series)) {
+      fac    <- fac * lambda / L
+      series <- temp + n * fac
+      if (stopping(series - temp, tol)){
+        means_hp_cache <<- Re(series) / f11_comp
+        return(means_hp_cache)
+      }
+      temp   <- series
+      L      <- L + 1
+    }
+    if (tol >= 0)
+      warning("Tolerance is not met")
+    means_hp_cache <<- Re(series) / f11_comp
+    return(means_hp_cache)
+  }
+
+  # Var(Y)
+  variances_hp <- function(lambda, gamma, maxiter_series = 10000, tol = 1.0e-10,
+                           f11_comp = NULL, means_hp_comp = NULL)
+  {
+    if (is.null(f11_comp))
+      f11_comp <- f11(lambda, gamma, maxiter_series, tol)
+    if (is.null(means_hp_comp))
+      means_hp_comp <- means_hp(lambda, gamma, maxiter_series, tol, f11_comp)
+    L    <- gamma
+    fac  <- 1
+    temp <- 0
+    for (n in seq_len(maxiter_series)) {
+      fac    <- fac * lambda / L
+      series <- temp + n ^ 2 * fac
+      if (stopping(series - temp, tol)){
+        return(Re(series) / f11_comp - means_hp_comp ^ 2)
+      }
+      temp   <- series
+      L      <- L + 1
+    }
+    if (tol >= 0)
+      warning("Tolerance is not met")
+    return(Re(series) / f11_comp - means_hp_comp ^ 2)
+  }
+
+  # E[psi(gamma + Y)]
+  lambda_means_psiy <- NULL
+  gamma_means_psiy <- NULL
+  means_psiy_cache <- NULL
+  means_psiy <- function(lambda, gamma, maxiter_series = 10000, tol = 1.0e-10,
+                         f11_comp = NULL) {
+    if (identical(lambda, lambda_means_psiy) && identical(gamma, gamma_means_psiy))
+      return(means_psiy_cache)
+    lambda_means_psiy <<- lambda
+    gamma_means_psiy <<- gamma
+    if (is.null(f11_comp))
+      f11_comp <- f11(lambda, gamma, maxiter_series, tol)
+    L    <- gamma
+    fac  <- 1
+    temp <- digamma(gamma)
+    for (n in seq_len(maxiter_series)) {
+      fac    <- fac * lambda / L
+      series <- temp + digamma(gamma + n) * fac
+      if (stopping(series - temp, tol)){
+        means_psiy_cache <<- Re(series) / f11_comp
+        return(means_psiy_cache)
+      }
+      temp   <- series
+      L      <- L + 1
+    }
+    if (tol >= 0)
+      warning("Tolerance is not met")
+    means_psiy_cache <<- Re(series) / f11_comp
+    return(means_psiy_cache)
+  }
+
+  # Cov(Y, psi(gamma + Y))
+  covars_psiy <- function(lambda, gamma, maxiter_series = 10000, tol = 1.0e-10,
+                          f11_comp = NULL, means_hp_comp = NULL) {
+    if (is.null(f11_comp))
+      f11_comp <- f11(lambda, gamma, maxiter_series, tol)
+    if (is.null(means_hp_comp))
+      means_hp_comp <- means_hp(lambda, gamma, maxiter_series, tol, f11_comp)
+    L    <- gamma
+    fac  <- 1
+    temp <- 0
+    for (n in seq_len(maxiter_series)) {
+      fac    <- fac * lambda / L
+      series <- temp + n * digamma(gamma + n) * fac
+      if (stopping(series - temp, tol)){
+        return(Re(series) / f11_comp -
+                 means_hp_comp *
+                 means_psiy(lambda, gamma, maxiter_series, tol, f11_comp))
+      }
+      temp   <- series
+      L      <- L + 1
+    }
+    if (tol >= 0)
+      warning("Tolerance is not met")
+    return(Re(series) / f11_comp -
+             means_hp_comp *
+             means_psiy(lambda, gamma, maxiter_series, tol, f11_comp))
+  }
+
   loglik <- function(param) {
     lambda     <- exp(param[(q1 + 1):(q1 + n)])
     beta_gamma <- param[(q1 + n + 1):(q1 + n + q2)]
     gamma      <- as.vector(exp(matrizgamma %*% beta_gamma))
-    return(- sum(weights * (y * log(lambda) -
+    value <- - sum(weights * (y * log(lambda) -
                               lgamma(gamma + y) + lgamma(gamma) -
-                              log(f11(lambda, gamma, maxiter_series = maxiter_series, tol = tol)))))
+                              log(f11(lambda, gamma, maxiter_series = maxiter_series, tol = tol))))
+    return(value)
   }
 
   # Gradient of the objective function
@@ -195,11 +348,14 @@ glm.hP <- function(formula.mu, formula.gamma, init.beta = NULL,
     lambda     <- exp(param[(q1+1):(q1+n)])
     beta_gamma <- param[(q1+n+1):(q1+n+q2)]
     gamma      <- as.vector(exp(matrizgamma %*% beta_gamma))
-    return(-c(rep(0, q1),
-              weights * (y / lambda - means_hp(lambda, gamma, maxiter_series = maxiter_series, tol = tol) / lambda) * lambda,
-              (weights * (-digamma(gamma + y) +
-                            means_psiy(lambda, gamma, maxiter_series, tol))) %*%
-                t(t(matrizgamma) %*% diag(gamma))))
+    f11_comp <- f11(lambda, gamma, maxiter_series = maxiter_series, tol = tol)
+    value <- -c(rep(0, q1),
+                weights * (y / lambda - means_hp(lambda, gamma, maxiter_series, tol, f11_comp) / lambda) * lambda,
+                (weights * (-digamma(gamma + y) +
+                              means_psiy(lambda, gamma, maxiter_series, tol, f11_comp))) %*%
+                  (gamma * matrizgamma))
+    #t(t(matrizgamma) %*% diag(gamma))
+    value
   }
 
   # Constraints
@@ -208,7 +364,7 @@ glm.hP <- function(formula.mu, formula.gamma, init.beta = NULL,
     lambda   <- exp(param[(q1+1):(q1+n)])
     beta_gam <- param[(q1+n+1):(q1+n+q2)]
     gam      <- as.vector(exp(matrizgamma %*% beta_gam))
-    exp(offset + matrizmu %*% beta) - means_hp(lambda, gam, maxiter_series = maxiter_series, tol = tol)
+    exp(offset + matrizmu %*% beta) - means_hp(lambda, gam, maxiter_series, tol)
   }
 
   # Gradient constraints
@@ -218,10 +374,15 @@ glm.hP <- function(formula.mu, formula.gamma, init.beta = NULL,
     lambda     <- exp(param[(q1+1):(q1+n)])
     beta_gamma <- param[(q1+n+1):(q1+n+q2)]
     gamma      <- as.vector(exp(matrizgamma %*% beta_gamma))
-    gradbeta   <- t(matrizmu) %*% diag(as.vector(mu))
-    gradlambda <- - diag(variances_hp(lambda, gamma, maxiter_series = maxiter_series, tol = tol) / lambda) * lambda
-    gradgamma <- diag(covars_psiy(lambda, gamma, maxiter_series, tol) * gamma) %*% matrizgamma
-    return(cbind(t(gradbeta), t(gradlambda), gradgamma))
+    # gradbeta   <- t(matrizmu) %*% diag(as.vector(mu))
+    gradbeta   <- t(as.vector(mu) * matrizmu)
+    f11_comp <- f11(lambda, gamma, maxiter_series = maxiter_series, tol = tol)
+    means_hp_comp <- means_hp(lambda, gamma, maxiter_series, tol, f11_comp)
+    gradlambda <- - diag(variances_hp(lambda, gamma, maxiter_series, tol, f11_comp, means_hp_comp) / lambda) * lambda
+    v <- covars_psiy(lambda, gamma, maxiter_series, tol, f11_comp, means_hp_comp)
+    # gradgamma <- diag(v * gamma) %*% matrizgamma
+    gradgamma <- v * gamma * matrizgamma
+    cbind(t(gradbeta), t(gradlambda), gradgamma)
   }
 
   # Optimization process
@@ -230,7 +391,6 @@ glm.hP <- function(formula.mu, formula.gamma, init.beta = NULL,
   )
 
   my_opts <- list(algorithm = 'NLOPT_LD_SLSQP',
-                  tol_rel = 0.01,
                   maxeval = 1000, # 100000,
                   local_opts = my_local_opts,
                   print_level = 0
@@ -243,6 +403,7 @@ glm.hP <- function(formula.mu, formula.gamma, init.beta = NULL,
     }
     my_opts[names(opts)] <- opts
   }
+
   fit <- nloptr::nloptr(param0,
                         eval_f = loglik,
                         eval_grad_f = loglik_grad,
@@ -254,7 +415,7 @@ glm.hP <- function(formula.mu, formula.gamma, init.beta = NULL,
   fit$pars <- fit$solution
 
   results <- list(
-    todo = fit,
+    nloptr = fit,
     offset = unname(stats::model.extract(a.mu, "offset")),
     aic = 2 * (fit$objective) + (q1 + q2) * 2,
     logver = fit$objective,

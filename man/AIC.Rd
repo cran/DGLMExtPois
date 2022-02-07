@@ -20,14 +20,17 @@ call to \code{\link{glm.hP}}.}
     default \code{k = 2} is the classical AIC.}
 }
 \description{
-Computes the Akaike's information criterion or the Shwarz's Bayesian criterion
+Computes the Akaike's information criterion or the Schwarz's Bayesian criterion
 for hyper-Poisson Fits
 }
 \examples{
+## Fit a hyper-Poisson model
 Bids$size.sq <- Bids$size ^ 2
 fit <- glm.hP(formula.mu = numbids ~ leglrest + rearest + finrest +
               whtknght + bidprem + insthold + size + size.sq + regulatn,
               formula.gamma = numbids ~ 1, data = Bids)
+
+## Obtain its AIC and BIC
 AIC(fit)
 BIC(fit)
 }

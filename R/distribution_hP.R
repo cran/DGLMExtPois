@@ -29,6 +29,7 @@ NULL
 #' @export
 #'
 #' @examples
+#' ## density function for hyper-Poisson
 #' dhP(3, 15, 2)
 dhP <-function(x, gamma, lambda) {
   if (!(is.double(x) || is.integer(x)) ||
@@ -72,6 +73,7 @@ dhP <-function(x, gamma, lambda) {
 #' @export
 #'
 #' @examples
+#' ## distribution function for hyper-Poisson
 #' phP(3, 15, 2)
 phP <- function(q, gamma, lambda, lower.tail = TRUE) {
   if (!(is.double(q) || is.integer(q)) ||
@@ -104,6 +106,7 @@ phP <- function(q, gamma, lambda, lower.tail = TRUE) {
 #' @export
 #'
 #' @examples
+#' ## random generation for the hyper-Poisson
 #' rhP(10, 15, 2)
 rhP <-function(n, gamma, lambda) {
   # check n parameter

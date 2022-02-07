@@ -45,7 +45,10 @@ Density, distribution function and random generation for the hyper-Poisson
 distribution with parameters \code{gamma} and \code{lambda}.
 }
 \examples{
+## density function for hyper-Poisson
 dhP(3, 15, 2)
+## distribution function for hyper-Poisson
 phP(3, 15, 2)
+## random generation for the hyper-Poisson
 rhP(10, 15, 2)
 }

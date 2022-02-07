@@ -14,13 +14,13 @@ A data frame with 126 rows and 13 variables: \describe{
   \item{regulatn}{regulation} \item{whtknght}{white knight} }
 }
 \source{
-Jaggia, Sanjiv and Satish Thosar (1993) “Multiple Bids as a
-  Consequence of Target Management Resistance”, Review of Quantitative
-  Finance and Accounting, 447–457.
+Sanjiv Jaggia and Satish Thosar (1993) "Multiple Bids as a
+  Consequence of Target Management Resistance", Review of Quantitative
+  Finance and Accounting, 3(4), pp. 447-457.
 
-  Cameron, A.C. and Per Johansson (1997) “Count Data Regression Models using
-  Series Expansions: with Applications”, Journal of Applied Econometrics, 12,
-  may, 203–223.
+  A. Colin Cameron and Per Johansson (1997) "Count Data Regression Models using
+  Series Expansions: with Applications", Journal of Applied Econometrics, 12,
+  pp. 203-223.
 }
 \usage{
 Bids

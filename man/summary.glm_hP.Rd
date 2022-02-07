@@ -33,9 +33,14 @@ These functions are all methods for class \code{"glm_hP"} or
 \code{summary.glm_hP} objects.
 }
 \examples{
+## Fit a hyper-Poisson model
+
 Bids$size.sq <- Bids$size ^ 2
 fit <- glm.hP(formula.mu = numbids ~ leglrest + rearest + finrest +
               whtknght + bidprem + insthold + size + size.sq + regulatn,
               formula.gamma = numbids ~ 1, data = Bids)
+
+## Obtain a summary of the fitted model
+
 summary(fit)
 }

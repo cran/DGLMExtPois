@@ -116,7 +116,8 @@ fitting process should be returned as a component of the returned value.}
   \item{\code{matrix.gamma}}{if requested, the gamma model matrix.}
   \item{\code{model.mu}}{if requested (the default) the mu model frame.}
   \item{\code{model.gamma}}{if requested (the default) the gamma model
-  frame.}
+  frame.} \item{\code{nloptr}}{an object of class \code{"nloptr"} with the
+  result returned by the optimizer \code{\link[nloptr]{nloptr}}}
 }
 \description{
 The \code{glm.hP} function is used to fit a hyper-Poisson double generalized
@@ -128,17 +129,26 @@ Fit a hyper-Poisson double generalized linear model using as optimizer the
 NLOPT_LD_SLSQP algorithm of function \code{\link[nloptr]{nloptr}}.
 }
 \examples{
+## Fit model
 Bids$size.sq <- Bids$size ^ 2
 fit <- glm.hP(formula.mu = numbids ~ leglrest + rearest + finrest +
               whtknght + bidprem + insthold + size + size.sq + regulatn,
               formula.gamma = numbids ~ 1, data = Bids)
+
+## Summary of the model
 summary(fit)
+
+## To see termination condition of the optimization process
+fit$nloptr$message
+
+## To see number of iterations of the optimization process
+fit$nloptr$iterations
 }
 \references{
-Saez-Castillo, A.J. & Conde-Sanchez, A. (2013). "A hyper-Poisson regression
-model for overdispersed and underdispersed count data", Computational
-Statistics & Data Analysis, vol. 61(C), pages 148--157
+Antonio J. Saez-Castillo and Antonio Conde-Sanchez (2013). "A hyper-Poisson
+regression model for overdispersed and underdispersed count data",
+Computational Statistics & Data Analysis, 61, pp. 148--157.
 
-Johnson, S. G. (2018). \href{https://CRAN.R-project.org/package=nloptr}{The
+S. G. Johnson (2018). \href{https://CRAN.R-project.org/package=nloptr}{The
 nlopt nonlinear-optimization package}
 }

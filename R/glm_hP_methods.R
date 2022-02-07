@@ -1,6 +1,6 @@
 #'AIC and BIC for hyper-Poisson Fits
 #'
-#'Computes the Akaike's information criterion or the Shwarz's Bayesian criterion
+#'Computes the Akaike's information criterion or the Schwarz's Bayesian criterion
 #'for hyper-Poisson Fits
 #'
 #'@param object an object of class \code{"glm_hP"}, typically the result of a
@@ -12,10 +12,13 @@ NULL
 #' @rdname AIC
 #' @export
 #' @examples
+#' ## Fit a hyper-Poisson model
 #' Bids$size.sq <- Bids$size ^ 2
 #' fit <- glm.hP(formula.mu = numbids ~ leglrest + rearest + finrest +
 #'               whtknght + bidprem + insthold + size + size.sq + regulatn,
 #'               formula.gamma = numbids ~ 1, data = Bids)
+#'
+#' ## Obtain its AIC and BIC
 #' AIC(fit)
 AIC.glm_hP <- function(object, ..., k = 2) {
   others <- list(...)
@@ -79,11 +82,14 @@ print.glm_hP <- function (x, digits = max(3L, getOption("digits") - 3L), ...) {
 #'
 #' @examples
 #' data(Bids)
+#' ## Fit a hype-Poisson model
 #' Bids$size.sq <- Bids$size ^ 2
 #' fit <- glm.hP(formula.mu = numbids ~ leglrest + rearest + finrest +
 #'               whtknght + bidprem + insthold + size + size.sq + regulatn,
 #'               formula.gamma = numbids ~ 1, data = Bids)
-#' predict(fit)
+#'
+#' ## As the newdata parameter is not used the fitted values are obtained
+#' predict(fit, type = "response")
 #' @export
 predict.glm_hP <- function(object, newdata = NULL,
                           type = c("link", "response"), ...) {
@@ -134,15 +140,22 @@ format.perc <- function(probs, digits)
 #' object.
 #'
 #' @param object a fitted object of class inheriting from \code{"glm_hP"}.
-#' @inheritParams stats::confint
+#' @param parm a specification of which parameters are to be given confidence
+#'   intervals, either a vector of numbers or a vector of names. If missing, all
+#'   parameters are considered.
+#' @param level the confidence level required.
+#' @param ... additional argument(s) for methods.
 #' @return A matrix (or vector) with columns giving lower and upper confidence
 #'   limits for each \code{beta} parameter. These will be labelled as
 #'   (1-level)/2 and 1 - (1-level)/2 in \% (by default 2.5\% and 97.5\%).
 #' @examples
+#' ## Estimate the model
 #' Bids$size.sq <- Bids$size ^ 2
 #' fit <- glm.hP(formula.mu = numbids ~ leglrest + rearest + finrest +
 #'          whtknght + bidprem + insthold + size + size.sq + regulatn,
 #'               formula.gamma = numbids ~ 1, data = Bids)
+#'
+#' ## Compute confidence intervals for parameters
 #' confint(fit)
 #' @export
 confint.glm_hP <- function (object, parm, level = 0.95, ...)

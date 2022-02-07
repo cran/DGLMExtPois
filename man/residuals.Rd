@@ -73,23 +73,33 @@ distribution of the response variable, the model is fine when only a few
 points fall off the envelope.
 }
 \examples{
+## Estimate a hyper-Poisson model
 Bids$size.sq <- Bids$size ^ 2
 hP.fit <- glm.hP(formula.mu = numbids ~ leglrest + rearest + finrest +
               whtknght + bidprem + insthold + size + size.sq + regulatn,
               formula.gamma = numbids ~ 1, data = Bids)
+
+## Compute residuals
+
 r <- residuals(hP.fit)
+## Estimate a COM-Poisson model
+
 Bids$size.sq <- Bids$size ^ 2
 CMP.fit <- glm.CMP(formula.mu = numbids ~ leglrest + rearest + finrest +
               whtknght + bidprem + insthold + size + size.sq + regulatn,
               formula.nu = numbids ~ 1, data = Bids)
+
+## Compute its residuals
+
 r <- residuals(CMP.fit)
 }
 \references{
-Dunn, P.K., Smyth, G.K. (1996). Randomized quantile residuals.
- Journal of Computational and Graphical Statistics, 5(3), 236-244.
+Peter K. Dunn and Gordon K. Smyth (1996). "Randomized quantile
+ residuals". Journal of Computational and Graphical Statistics, 5(3), pp.
+ 236-244.
 
- Atkinson, A. (1981). Two graphical displays for outlying and influential
- observations in regression. Biometrika, 68 (1), 13–20.
+ A. C. Atkinson (1981). "Two graphical displays for outlying and influential
+ observations in regression". Biometrika, 68(1), pp. 13–20.
 }
 \seealso{
 \code{\link{plots}}

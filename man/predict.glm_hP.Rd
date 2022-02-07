@@ -26,9 +26,12 @@ Obtains predictions from a fitted \code{"glm_hP"} object.
 }
 \examples{
 data(Bids)
+## Fit a hype-Poisson model
 Bids$size.sq <- Bids$size ^ 2
 fit <- glm.hP(formula.mu = numbids ~ leglrest + rearest + finrest +
               whtknght + bidprem + insthold + size + size.sq + regulatn,
               formula.gamma = numbids ~ 1, data = Bids)
-predict(fit)
+
+## As the newdata parameter is not used the fitted values are obtained
+predict(fit, type = "response")
 }

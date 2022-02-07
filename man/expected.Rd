@@ -28,8 +28,8 @@ A list containing the following components:
 \description{
 The \code{hP_expected} and \code{CMP_expected} functions calculate the
 probability distribution of the count response variable Y for each observation
-and obtain the corresponding expected frequencies. It is an informal way to
-evaluate the fit of the hP or CMP model by comparing the predicted
+and obtain the corresponding expected frequencies. It is an informal way of
+assessing the fit of the hP or CMP model by comparing the predicted
 distribution of counts with the observed distribution.
 }
 \details{
@@ -44,21 +44,31 @@ of the square of differences (similar to the Pearson statistic of goodness of
 fit).
 }
 \examples{
+## Fit a hyper-Poisson model
+
 Bids$size.sq <- Bids$size ^ 2
 hP.fit <- glm.hP(formula.mu = numbids ~ leglrest + rearest + finrest +
                  whtknght + bidprem + insthold + size + size.sq + regulatn,
                  formula.gamma = numbids ~ 1, data = Bids)
+
+## Compute the expected probabilities and the frequencies
+
 hP_expected(hP.fit)
+## Estimate a COM-Poisson model
+
 Bids$size.sq <- Bids$size ^ 2
 CMP.fit <- glm.CMP(formula.mu = numbids ~ leglrest + rearest + finrest +
                    whtknght + bidprem + insthold + size + size.sq + regulatn,
                    formula.nu = numbids ~ 1, data = Bids)
+
+## Compute the expected probabilities and the frequencies
+
 CMP_expected(CMP.fit)
 }
 \references{
-Hilbe, J. M. (2011).Negative Binomial Regression. (2nd ed.).
- Cambridge University Press.#'
+J. M. Hilbe (2011). Negative Binomial Regression. (2nd ed.). Cambridge
+University Press.
 
- Long, J. S. & Freese, J. (2014). Regression Models for Categorical Dependent
- Variables using STATA. (3rd ed.). Stata Press.
+M. Scott Long and Jeremy Freese (2014). Regression Models for Categorical
+Dependent Variables using STATA. (3rd ed.). Stata Press.
 }

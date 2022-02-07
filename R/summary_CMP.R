@@ -9,10 +9,14 @@
 #'  call to \code{summary.glm_CMP}.
 #'@inheritParams stats::print.summary.glm
 #' @examples
+#' ## Fit a COM-Poisson model
 #' Bids$size.sq <- Bids$size^2
 #' fit <- glm.CMP(formula.mu = numbids ~ leglrest + rearest + finrest +
 #'                whtknght + bidprem + insthold + size + size.sq + regulatn,
 #'                formula.nu = numbids ~ 1, data = Bids)
+#'
+#' ## Obtain a summary of the fitted model
+#'
 #' summary(fit)
 #'@name summary.glm_CMP
 NULL

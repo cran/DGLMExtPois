@@ -3,8 +3,8 @@
 #'
 #'The \code{hP_expected} and \code{CMP_expected} functions calculate the
 #'probability distribution of the count response variable Y for each observation
-#'and obtain the corresponding expected frequencies. It is an informal way to
-#'evaluate the fit of the hP or CMP model by comparing the predicted
+#'and obtain the corresponding expected frequencies. It is an informal way of
+#'assessing the fit of the hP or CMP model by comparing the predicted
 #'distribution of counts with the observed distribution.
 #'
 #'The average expected probabilities are computed as \deqn{\bar(Pr)(y=k) =
@@ -29,21 +29,28 @@
 #'  \code{frequencies} and \code{observed_freq}.} \item{\code{chi2}}{sum of the
 #'  square of differences between \code{frequencies} and \code{observed_freq}.}
 #'
-#'@references Hilbe, J. M. (2011).Negative Binomial Regression. (2nd ed.).
-#'  Cambridge University Press.#'
+#'@references
 #'
-#'  Long, J. S. & Freese, J. (2014). Regression Models for Categorical Dependent
-#'  Variables using STATA. (3rd ed.). Stata Press.
+#'J. M. Hilbe (2011). Negative Binomial Regression. (2nd ed.). Cambridge
+#'University Press.
+#'
+#'M. Scott Long and Jeremy Freese (2014). Regression Models for Categorical
+#'Dependent Variables using STATA. (3rd ed.). Stata Press.
 #'
 #'@name expected
 NULL
 
 #' @rdname expected
 #' @examples
+#' ## Fit a hyper-Poisson model
+#'
 #' Bids$size.sq <- Bids$size ^ 2
 #' hP.fit <- glm.hP(formula.mu = numbids ~ leglrest + rearest + finrest +
 #'                  whtknght + bidprem + insthold + size + size.sq + regulatn,
 #'                  formula.gamma = numbids ~ 1, data = Bids)
+#'
+#' ## Compute the expected probabilities and the frequencies
+#'
 #' hP_expected(hP.fit)
 #' @export
 hP_expected <- function(object) {
@@ -95,10 +102,15 @@ hP_expected <- function(object) {
 
 #' @rdname expected
 #' @examples
+#' ## Estimate a COM-Poisson model
+#'
 #' Bids$size.sq <- Bids$size ^ 2
 #' CMP.fit <- glm.CMP(formula.mu = numbids ~ leglrest + rearest + finrest +
 #'                    whtknght + bidprem + insthold + size + size.sq + regulatn,
 #'                    formula.nu = numbids ~ 1, data = Bids)
+#'
+#' ## Compute the expected probabilities and the frequencies
+#'
 #' CMP_expected(CMP.fit)
 #' @export
 CMP_expected <- function(object) {
