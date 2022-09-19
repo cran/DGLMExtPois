@@ -1,3 +1,7 @@
+## DGLMExtPois 0.2.1
+
+* More unit tests have been developed
+
 ## DGLMExtPois 0.2.0
 
 * Removed dependency with progress package

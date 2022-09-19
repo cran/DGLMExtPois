@@ -105,10 +105,10 @@
 #' ## Summary of the model
 #' summary(fit)
 #'
-#' ## To see termination condition of the optimization process
+#' ## To see the termination condition of the optimization process
 #' fit$nloptr$message
 #'
-#' ## To see number of iterations of the optimization process
+#' ## To see the number of iterations of the optimization process
 #' fit$nloptr$iterations
 glm.hP <- function(formula.mu, formula.gamma, init.beta = NULL,
                    init.delta = NULL, data, weights, subset, na.action,

@@ -1,12 +1,12 @@
-efbc1e810e90c4e208c9a41c8bdfa360 *DESCRIPTION
+1d6e9d33a8a55f98a08da32f618a503a *DESCRIPTION
 d9f68925a4b03364c9386c67d0a62717 *NAMESPACE
-eae70f40d7872264499ed9f258a07d5b *NEWS.md
+53fa204d0394361e7bc2f0e6406c97bf *NEWS.md
 6d2b2b7f70e926eeb51fdf0ec238dcbe *R/DGLMExtPois.R
 5588833bb35a493250d9ed700095981f *R/data.R
 ae358d1f02de1a89149aee5c69b44c9a *R/distribution_hP.R
 0d22eb5ff3830c3907396124376603e5 *R/glm_CMP.R
 7e6bbb64dfdd3ba626f58d96e2eded94 *R/glm_CMP_methods.R
-77df9bac0344c679694f2357aba022b5 *R/glm_hP.R
+803ff08a81d3da42eb34a34e4cd42847 *R/glm_hP.R
 6f558844f03a0effccc30423007eaa56 *R/glm_hP_methods.R
 83de5e00908cdfe354c2ad4f5cc8d3df *R/lrtest.R
 e8d631ea87dcda402e1942882e307595 *R/marginal-probabilities-and-expectations.R
@@ -27,7 +27,7 @@ d7314029f3dd7671eaa3a6981fca1f11 *man/CustomerProfile.Rd
 e25312c31909027c85f6ae710cee5b2c *man/confint.glm_hP.Rd
 8b732b6cd05a2a7815f2d2e61e0c8099 *man/expected.Rd
 48f5613c578cd3001dbf02ca03f0388f *man/glm.CMP.Rd
-401ffb05c4f95df6172b11f64fe8d0a8 *man/glm.hP.Rd
+9afda3c2ace4e57469def8f79659f1ac *man/glm.hP.Rd
 767b0268f7f843ebc560a4ebfcab54c1 *man/hP.Rd
 4726da5541cfc39a23767888c2c8921c *man/lrtest.Rd
 8268d27ab1940164a29fad91a3f11864 *man/plots.Rd
@@ -37,5 +37,9 @@ d49d2e48b6c7ebeba4ee1c1cff9d853c *man/predict.glm_hP.Rd
 1d545d358c4c2688cd048aa1ec0f4508 *man/summary.glm_CMP.Rd
 a6f800137e8454aef980534fdc85fe4a *man/summary.glm_hP.Rd
 f56465bac7b6d0608b52b704876f9854 *tests/testthat.R
+683d5da26887d3591a147cdb7896a7c5 *tests/testthat/test-glm_CMP.R
+664f2f1d573f6eaa7fda1cd45a4dda93 *tests/testthat/test-glm_hP.R
+c60d8ce5aa1a770a1f1a48f8344865f8 *tests/testthat/test-residuals.R
+244ca3af2b94617efd3b200d6ae0d9e6 *tests/testthat/test-utils.R
 d89d0db34024cc3663aad77436d950d3 *tests/testthat/test_hP_distribution.R
-7140f81412b1900857280afab3f5682c *tests/testthat/test_nloptr.R
+4056794cf3ea31d845362096fa2e2282 *tests/testthat/test_nloptr.R

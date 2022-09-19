@@ -1,7 +1,7 @@
 Package: DGLMExtPois
 Type: Package
 Title: Double Generalized Linear Models Extending Poisson Regression
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: c(
     person("Antonio Jose", "Saez-Castillo", role = c("aut"), email = "ajsaez@ujaen.es"),
     person("Antonio", "Conde-Sanchez", role = c("aut"), email = "aconde@ujaen.es"),
@@ -16,15 +16,15 @@ License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Imports: nloptr (>= 1.2.1), COMPoissonReg
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 URL: https://github.com/franciscomartinezdelrio/DGLMExtPois
 BugReports: https://github.com/franciscomartinezdelrio/DGLMExtPois/issues
 Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2022-02-07 12:39:30 UTC; UJA
+Packaged: 2022-09-19 07:05:12 UTC; UJA
 Author: Antonio Jose Saez-Castillo [aut],
   Antonio Conde-Sanchez [aut],
   Francisco Martinez [aut, cre]
 Repository: CRAN
-Date/Publication: 2022-02-07 13:00:02 UTC
+Date/Publication: 2022-09-19 07:26:12 UTC
