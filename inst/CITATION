@@ -1,0 +1,12 @@
+citHeader("To cite DGLMExtPois in publications, please use:")
+
+bibentry(bibtype = "Article",
+  title     = "{DGLMExtPois: Advances in Dealing with Over and Under-dispersion in a Double GLM Framework}",
+  author   = c(person(c("Antonio", "J."), "Saez-Castillo"),
+               person("Antonio", "Conde-Sanchez"),
+               person("Francisco", "Martinez")),
+  journal   = "{The R Journal}",
+  volume    =  14,
+  number    =  4,
+  pages     = "121--140",
+  year      =  2022)
