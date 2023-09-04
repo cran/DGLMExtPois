@@ -1,13 +1,13 @@
-a6d88583402d054dc30801aa74347ed1 *DESCRIPTION
+de6b4bea8ffb680b0433f9a47275a9ff *DESCRIPTION
 d9f68925a4b03364c9386c67d0a62717 *NAMESPACE
-2e976419df41bbbc91c716d82f5a99dc *NEWS.md
-6d2b2b7f70e926eeb51fdf0ec238dcbe *R/DGLMExtPois.R
+8a937ccc4db8f886a6ec9bacf78f41b1 *NEWS.md
+df6cc46bc7fae1a55b713f3d5065b35a *R/DGLMExtPois-package.R
 5588833bb35a493250d9ed700095981f *R/data.R
 ae358d1f02de1a89149aee5c69b44c9a *R/distribution_hP.R
 0d22eb5ff3830c3907396124376603e5 *R/glm_CMP.R
-7e6bbb64dfdd3ba626f58d96e2eded94 *R/glm_CMP_methods.R
+fad987b68522b1b06f89fd2b0f8bd8ed *R/glm_CMP_methods.R
 803ff08a81d3da42eb34a34e4cd42847 *R/glm_hP.R
-6f558844f03a0effccc30423007eaa56 *R/glm_hP_methods.R
+a829b19aa42e782ff7f2a23f3870b4a4 *R/glm_hP_methods.R
 83de5e00908cdfe354c2ad4f5cc8d3df *R/lrtest.R
 e8d631ea87dcda402e1942882e307595 *R/marginal-probabilities-and-expectations.R
 ff7d49a310e20871391bf6db50ea3b39 *R/plots.R
@@ -16,6 +16,7 @@ ff7d49a310e20871391bf6db50ea3b39 *R/plots.R
 be138688b5eaeb13fbb6cceec9577143 *R/summary_hP.R
 1fdeb37563dd3d77cc59bdffd0de3605 *R/utils.R
 077e29cd65a91cdc392768a06b7064f6 *README.md
+2836b2c5db38c9819380bd093383d89d *build/partial.rdb
 e5ee7462e16091c9e7c1728b5f9b0cc1 *data/Bids.rda
 44f5e1e6086a8c914cf4d4f5cbf40d51 *data/CustomerProfile.rda
 338e4afd94e0c50339ded619dc779645 *inst/CITATION
@@ -23,7 +24,7 @@ e5ee7462e16091c9e7c1728b5f9b0cc1 *data/Bids.rda
 4bd289c015d6ee7a5544fa6d9d47f4d1 *man/AIC_CMP.Rd
 0b8739884e36dfcc3a042e00ee668b04 *man/Bids.Rd
 d7314029f3dd7671eaa3a6981fca1f11 *man/CustomerProfile.Rd
-92f8c5d0febc9b179a696351eb25239f *man/DGLMExtPois.Rd
+6e41c6f5b3f2bea8a0bf6fe759d87338 *man/DGLMExtPois-package.Rd
 7db47892ba3c2bce9b7a231b425d5ed3 *man/confint.glm_CMP.Rd
 e25312c31909027c85f6ae710cee5b2c *man/confint.glm_hP.Rd
 8b732b6cd05a2a7815f2d2e61e0c8099 *man/expected.Rd

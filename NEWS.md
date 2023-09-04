@@ -1,3 +1,7 @@
+# DGLMExtPois 0.2.3
+
+* DGLMExtPois-package file modified to comply with CRAN
+
 # DGLMExtPois 0.2.2
 
 * CITATION file added

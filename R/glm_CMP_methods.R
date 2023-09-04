@@ -161,7 +161,7 @@ confint.glm_CMP <- function (object, parm, level = 0.95, ...)
   else if(is.numeric(parm)) parm <- pnames[parm]
   a <- (1 - level)/2
   a <- c(a, 1 - a)
-  pct <- format.perc(a, 3)
+  pct <- format_perc(a, 3)
   fac <- stats::qnorm(a)
   ci <- array(NA, dim = c(length(parm), 2L),
               dimnames = list(parm, pct))
